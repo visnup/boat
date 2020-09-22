@@ -11,16 +11,15 @@ const base =
   } = new jsdom.JSDOM(await res.text());
 
   const boats = [];
-  for (const link of document.querySelectorAll(".info a")) {
-    console.log(link.href);
+  for (const link of document.querySelectorAll(".info a"))
     boats.push(await boat(link.href));
-  }
 
   console.log(boats);
 })();
 
 async function boat(path) {
   const url = new URL(path, base);
+  const [, id] = path.match(/-(\d+).aspx$/);
   const res = await fetch(url);
   const html = await res.text();
   const {
@@ -42,6 +41,8 @@ async function boat(path) {
   };
 
   return {
+    id,
+    url: url.toString(),
     ...Object.fromEntries(
       Object.entries(selectors).map(([key, selector]) => [
         key,
@@ -50,6 +51,5 @@ async function boat(path) {
           .replace(/\s+/g, " "),
       ])
     ),
-    url: url.toString(),
   };
 }
