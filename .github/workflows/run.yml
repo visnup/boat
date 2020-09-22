@@ -1,24 +1,11 @@
 name: run
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"
   push:
 
 jobs:
   check:
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        site:
-          - amazon
-          - bestbuy
-          - bhphotovideo
-          # - gamestop
-          - target
-          - walmart
 
     steps:
       - uses: actions/checkout@v2
@@ -26,16 +13,4 @@ jobs:
         with:
           node-version: "12"
       - run: npm ci
-
-      - run: node index.js ${{ matrix.site }}
-        env:
-          TWILIO_SID: ${{ secrets.TWILIO_SID }}
-          TWILIO_AUTH: ${{ secrets.TWILIO_AUTH }}
-          TWILIO_FROM: ${{ secrets.TWILIO_FROM }}
-          TWILIO_TO: ${{ secrets.TWILIO_TO }}
-
-      - uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: ${{ matrix.site }}
-          path: "*.png"
+      - run: node index.js
