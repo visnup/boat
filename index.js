@@ -4,8 +4,14 @@ import {URL} from "url";
 
 const base =
   "https://www.onlyinboards.com/Used-ski-boats.aspx?MakerName=1&YearFrom=2018&YearTo=&PriceFrom=&PriceTo=&Model=221&ZIP=&Distance=";
+const userAgent = {
+  headers: {
+    "User-Agent":
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36",
+  },
+};
 (async function () {
-  const res = await fetch(base);
+  const res = await fetch(base, userAgent);
   const {
     window: {document},
   } = new jsdom.JSDOM(await res.text());
@@ -34,7 +40,7 @@ const base =
 async function crawl(path) {
   const url = new URL(path, base);
   const [, id] = path.match(/-(\d+).aspx$/);
-  const res = await fetch(url);
+  const res = await fetch(url, userAgent);
   const html = await res.text();
   const {
     window: {document},
