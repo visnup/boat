@@ -44,7 +44,7 @@ async function crawl(path) {
     name: "[itemprop='name']",
     price: ".price strong span",
     listed: ".datelisted strong",
-    engine: ".boat-info li:first-child strong",
+    engine: ".col-right .boat-info li:first-child strong",
     hours: ".col-right .boat-info li.hours strong",
     status: ".hours strong font",
     location: ".location strong",
