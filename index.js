@@ -60,7 +60,7 @@ async function crawl(path) {
     model: ".model strong",
   };
 
-  return {
+  const boat = {
     id,
     url: url.toString(),
     fetched: new Date(),
@@ -73,4 +73,8 @@ async function crawl(path) {
       ])
     ),
   };
+  boat.price = +boat.price.replace(/\D/g, "") || null;
+  boat.hours = +boat.hours;
+
+  return boat;
 }
