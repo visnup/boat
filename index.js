@@ -12,12 +12,26 @@ const base =
 
   const boats = [];
   for (const link of document.querySelectorAll(".info a"))
-    boats.push(await boat(link.href));
-
+    boats.push(await crawl(link.href));
   console.log(boats);
+
+  const body = JSON.stringify({records: boats.map((fields) => ({fields}))});
+  console.log(body);
+  const save = await fetch(
+    "https://api.airtable.com/v0/appM27XwR5pkr8aNS/Boats",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.AIRTABLE_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body,
+    }
+  );
+  console.log(await save.text());
 })();
 
-async function boat(path) {
+async function crawl(path) {
   const url = new URL(path, base);
   const [, id] = path.match(/-(\d+).aspx$/);
   const res = await fetch(url);
@@ -43,6 +57,7 @@ async function boat(path) {
   return {
     id,
     url: url.toString(),
+    fetched: new Date(),
     ...Object.fromEntries(
       Object.entries(selectors).map(([key, selector]) => [
         key,

@@ -9,7 +9,9 @@
     "jsdom": "^16.4.0",
     "node-fetch": "^2.6.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "env-cmd": "^10.1.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
