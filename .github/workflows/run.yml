@@ -16,3 +16,5 @@ jobs:
           node-version: "12"
       - run: npm ci
       - run: node index.js
+        env:
+          AIRTABLE_KEY: ${{ secrets.AIRTABLE_KEY }}
