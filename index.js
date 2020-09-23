@@ -16,25 +16,8 @@ const userAgent = {
     window: {document},
   } = new jsdom.JSDOM(await res.text());
 
-  const boats = [];
   for (const link of document.querySelectorAll(".info a"))
-    boats.push(await crawl(link.href));
-  console.log(boats);
-
-  const body = JSON.stringify({records: boats.map((fields) => ({fields}))});
-  console.log(body);
-  const save = await fetch(
-    "https://api.airtable.com/v0/appM27XwR5pkr8aNS/Boats",
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body,
-    }
-  );
-  console.log(await save.text());
+    await save(await crawl(link.href));
 })();
 
 async function crawl(path) {
@@ -77,4 +60,19 @@ async function crawl(path) {
   boat.hours = +boat.hours;
 
   return boat;
+}
+
+async function save(fields) {
+  const res = await fetch(
+    "https://api.airtable.com/v0/appM27XwR5pkr8aNS/Boats",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.AIRTABLE_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({records: [{fields}]}),
+    }
+  );
+  console.log(await res.text());
 }
