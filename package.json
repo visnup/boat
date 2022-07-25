@@ -7,7 +7,7 @@
   "main": "index.js",
   "dependencies": {
     "jsdom": "^16.6.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^3.2.9"
   },
   "devDependencies": {
     "env-cmd": "^10.1.0"
